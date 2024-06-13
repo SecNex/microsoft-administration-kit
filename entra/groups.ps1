@@ -7,16 +7,24 @@
     The Power Platform environment name.
 .PARAMETER Region
     The region of the environment.
-.PARAMETER Stage
-    The stage of the environment.
 .PARAMETER GroupNamePrefix
     The prefix of the group name.
+.PARAMETER DEV
+    The DEV stage flag.
+.PARAMETER TST
+    The TST stage flag.
+.PARAMETER PRD
+    The PRD stage flag.
+.PARAMETER TenantId
+    The tenant ID.
+.PARAMETER ClientId
+    The client ID.
+.PARAMETER ClientSecret 
+    The client secret.
 .EXAMPLE
-    .\Groups.ps1 -Region "DE" -Environment "PP" -Stage "DEV"
-    This will create a group with the name "R-PP-DE PP DEV".
+    .\Groups.ps1 -Region "EMEA" -Environment "Entra" -DEV -TST -PRD -TenantId "00000000-0000-0000-0000-000000000000" -ClientId "00000000-0000-0000-0000-000000000000" -ClientSecret "
 .EXAMPLE
-    .\Groups.ps1 -Region "DE" -Environment "PP" -Stage "DEV" -GroupNamePrefix "R-PP-"
-    This will create a group with the name "R-PP-DE PP DEV".
+    .\Groups.ps1 -Region "EMEA" -Environment "Entra" -DEV -TST -PRD -TenantId "00000000-0000-0000-0000-000000000000" -ClientId "00000000-0000-0000-0000-000000000000" -ClientSecret " -GroupNamePrefix "R-PP-"
 .NOTES
     File Name      : Groups.ps1
     Author         : SecNex Community
@@ -62,10 +70,6 @@ if ($PRD) {
 }
 
 Write-Host $stages
-
-# if (-not (Get-Module -Name Microsoft.Graph)) {
-#     Install-Module -Name Microsoft.Graph -Scope CurrentUser -Force -AllowClobber
-# }
 
 $roles = @("Users", "Makers", "Analysts")
 
