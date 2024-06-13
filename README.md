@@ -21,11 +21,5 @@ To use the MAK, you will need PowerShell 7.0 or later installed on your computer
 After you can clone the repository:
 
 ```powershell
-git clone https://github.com/SecNex/mak.git
+git clone https://github.com/SecNex/microsoft-administration-kit.git
 ```
-
-## Usage
-
-### Pipelines
-
-The MAK includes a set of PowerShell scripts that can be used to automate the deployment and management of Microsoft products and services. These scripts are organized into pipelines, which are collections of related scripts that can be run together to perform a specific task.
