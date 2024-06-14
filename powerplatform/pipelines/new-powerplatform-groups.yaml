@@ -1,0 +1,98 @@
+trigger: none
+
+parameters:
+  - name: environment
+    displayName: Environment
+    type: string
+  - name: region
+    displayName: Region
+    type: string
+    values:
+      - 'DE'
+      - 'US'
+      - 'UK'
+      - 'CN'
+      - 'EMEA'
+      - 'AMER'
+      - 'APAC'
+      - 'WW'
+    default: 'DE'
+  - name: groupPrefix
+    displayName: Group Prefix
+    type: string
+    default: 'R-PP-'
+  - name: environmentDEV
+    displayName: 'Do you want to create a DEV environment?'
+    type: boolean
+    default: true
+  - name: environmentTEST
+    displayName: 'Do you want to create a TEST environment?'
+    type: boolean
+    default: true
+  - name: environmentPROD
+    displayName: 'Do you want to create a PROD environment?'
+    type: boolean
+    default: true
+
+stages:
+  - stage: 'prepare'
+    displayName: 'Prepare Parameters'
+    jobs:
+      - job: 'prepareparam'
+        displayName: 'Prepare parameters for PowerShell'
+        steps:
+          - task: PowerShell@2
+            inputs:
+              targetType: 'inline'
+              script: |
+                $dev = ($(EnvironmentDEV) -eq 'true')
+                $test = ($(EnvironmentTEST) -eq 'true')
+                $prod = ($(EnvironmentPROD) -eq 'true')
+                $region = $(region)
+                $groupPrefix = $(groupPrefix)
+                $environment = $(environment)
+
+                Write-Host "##vso[task.setvariable variable=dev]$dev"
+                Write-Host "##vso[task.setvariable variable=test]$test"
+                Write-Host "##vso[task.setvariable variable=prod]$prod"
+                Write-Host "##vso[task.setvariable variable=region]$region"
+                Write-Host "##vso[task.setvariable variable=groupPrefix]$groupPrefix"
+                Write-Host "##vso[task.setvariable variable=environment]$environment"
+            name: prepparams
+  - stage: 'creategroups'
+    displayName: 'Create Power Platform Groups'
+    dependsOn: prepareparam
+    jobs:
+      - job: 'outputtodos'
+        displayName: 'Output ToDos'
+        variables:
+          - name: dev
+            value: $[ stageDependencies.prepare.prepareparam.outputs['prepparams.dev'] ]
+          - name: test
+            value: $[ stageDependencies.prepare.prepareparam.outputs['prepparams.test'] ]
+          - name: prod
+            value: $[ stageDependencies.prepare.prepareparam.outputs['prepparams.prod'] ]
+          - name: region
+            value: $[ stageDependencies.prepare.prepareparam.outputs['prepparams.region'] ]
+          - name: groupPrefix
+            value: $[ stageDependencies.prepare.prepareparam.outputs['prepparams.groupPrefix'] ]
+          - name: environment
+            value: $[ stageDependencies.prepare.prepareparam.outputs['prepparams.environment'] ]
+        steps:
+          - task: PowerShell@2
+            displayName: 'Output: Stages'
+            inputs:
+              targetType: 'inline'
+              script: |
+                if ($dev) {
+                  Write-Host "Create DEV environment"
+                }
+                if ($test) {
+                  Write-Host "Create TEST environment"
+                }
+                if ($prod) {
+                  Write-Host "Create PROD environment"
+                }
+            name: outputstages
+        
+    
