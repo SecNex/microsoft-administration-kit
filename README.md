@@ -71,6 +71,8 @@ Install-Module -Name SecNex.MAK -Scope CurrentUser -AllowClobber -Force
 
 ## Usage
 
+### PowerShell Module
+
 To use the MAK, you will need to import the module into your PowerShell session:
 
 ```powershell
@@ -78,3 +80,23 @@ Import-Module SecNex.MAK
 ```
 
 You can then use the cmdlets provided by the MAK to manage your Microsoft products and services.
+
+### Pipelines
+
+The MAK includes a set of Azure DevOps pipelines and GitHub Actions workflows that you can use to automate the deployment and management of your Microsoft products and services.
+
+To use the pipelines and workflows, you will need to create a new pipeline or workflow in your Azure DevOps project or GitHub repository and reference the appropriate YAML file in the MAK repository.
+
+Best practices for pipelines and worjflows can be found in the [Best Practices for CI/CD](https://github.com/SecNex/bestpractice-cicd) repository.
+
+## Contributing
+
+If you would like to contribute to the MAK, please fork the repository and submit a pull request with your changes. You can also open an issue if you have any questions or suggestions.
+
+## License
+
+The MAK is released under the [MIT License](LICENSE).
+
+## Contact
+
+If you have any questions or feedback, please contact us at [support@secnex.io](mailto:support@secnex.io).
